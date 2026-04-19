@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║   SM ELÉTRICS — index.html                              ║
+  ║   Site principal com Lamborghini 3D no background       ║
+  ║   Versão 2.0 | 2026                                     ║
+  ╚══════════════════════════════════════════════════════════╝
+
+  # ESTRUTURA GERAL DO ARQUIVO:
+  ──────────────────────────────
+  1. <head>       → Metadados, fontes, ícones e CSS
+  2. <header>     → Logo + menu de navegação
+  3. #hero        → Banner principal com canvas 3D
+  4. #servicos    → Cards de serviços oferecidos
+  5. #sobre       → Seção institucional
+  6. #stats       → Números/conquistas da empresa
+  7. #diferenciais→ Pontos fortes
+  8. #cta-banner  → Chamada para ação
+  9. #contato     → Formulário + informações
+  10. <footer>    → Rodapé com links e redes sociais
+  11. Botões fixos→ WhatsApp flutuante + voltar ao topo
+  12. <scripts>   → Three.js + script.js
+-->
+<head>
+  <!-- # META: Configurações básicas da página -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SM Elétrics — Especialistas em elétrica automotiva, som, baterias e polimento de faróis." />
+  <title>SM Elétrics | Serviços Automotivos de Elite</title>
+
+  <!-- # FONTES GOOGLE: Bebas Neue (títulos) + Barlow (texto) + Fira Code (código) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- # ÍCONES: Remixicons — biblioteca de ícones gratuita -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- # CSS PRINCIPAL: Todo o visual do site está em styles.css -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 1: HEADER — Topo fixo do site
+       Contém: Logo | Menu desktop | Botão WhatsApp | Menu hamburguer mobile
+       Para editar o logo, troque o texto dentro de .logo-sm e .logo-eletrics
+       Para adicionar itens ao menu, copie um <li> e altere o href e texto
+  ═══════════════════════════════════════════════ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+
+      <!-- Logo da empresa — edite o texto ou substitua por uma <img> -->
+      <a href="#hero" class="header__logo" aria-label="Voltar ao início">
+        <span class="logo-sm">SM</span>
+        <span class="logo-barra">\</span>
+        <span class="logo-eletrics">ELÉTRICS</span>
+        <span class="logo-ano">EST. 2025</span>
+      </a>
+
+      <!-- Menu de navegação para desktop (some no mobile) -->
+      <nav class="header__nav" id="mainNav" aria-label="Menu principal">
+        <ul>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#diferenciais">Diferenciais</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+
+      <!-- Botão de WhatsApp no header — troque o número: 55 + DDD + número -->
+      <a href="https://wa.me/5517996746002"
+         target="_blank"
+         rel="noopener"
+         class="btn btn--gold header__cta"
+         aria-label="Falar no WhatsApp">
+        <i class="ri-whatsapp-line"></i>
+        <span>WhatsApp</span>
+      </a>
+
+      <!-- Botão hamburguer para mobile (3 risquinhos) — controlado pelo script.js -->
+      <button class="hamburger" id="hamburger"
+              aria-label="Abrir menu"
+              aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+
+    <!-- Menu mobile — expande quando o hamburguer é clicado -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        <li><a href="#servicos"     class="mnav-link">Serviços</a></li>
+        <li><a href="#sobre"        class="mnav-link">Sobre</a></li>
+        <li><a href="#diferenciais" class="mnav-link">Diferenciais</a></li>
+        <li><a href="#contato"      class="mnav-link">Contato</a></li>
+        <li>
+          <a href="https://wa.me/5517996746002" 
+             target="_blank" rel="noopener"
+             class="btn btn--gold mnav-cta">
+            <i class="ri-whatsapp-line"></i> Falar no WhatsApp
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 2: HERO — Banner principal
+       O canvas 3D (#lambo-canvas) renderiza a Lamborghini.
+       Todo código 3D está em script.js na seção "# BLOCO 3D"
+       O conteúdo de texto fica sobreposto ao canvas.
+  ═══════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+
+    <!-- Canvas onde o Three.js desenha a Lamborghini 3D -->
+    <!-- Para desativar o 3D: comente esta linha e remova o bloco 3D no script.js -->
+    <canvas id="lambo-canvas" aria-hidden="true"></canvas>
+
+    <!-- Overlay escuro para garantir legibilidade do texto sobre o 3D -->
+    <div class="hero__overlay" aria-hidden="true"></div>
+
+    <!-- Grade decorativa de linhas tecnológicas ao fundo -->
+    <div class="hero__grid" aria-hidden="true"></div>
+
+    <!-- Conteúdo principal do hero: texto + botões -->
+    <div class="container hero__content">
+
+      <!-- Tag pequena acima do título -->
+      <p class="hero__eyebrow">⚡ Especialistas em Elétrica Automotiva</p>
+
+      <!-- Título principal — edite livremente -->
+      <h1 class="hero__titulo">
+        Potência, Precisão<br/>
+        <em>e Excelência</em><br/>
+        em Cada Serviço
+      </h1>
+
+      <!-- Subtítulo descritivo -->
+      <p class="hero__sub">
+        Som automotivo de alta performance, eletrônica especializada,
+        baterias e polimento de faróis. Seu veículo merece o melhor.
+      </p>
+
+      <!-- Botões de ação (CTA) -->
+      <div class="hero__acoes">
+        <a href="#contato" class="btn btn--gold btn--lg">
+          <i class="ri-tools-fill"></i> Solicitar Orçamento
+        </a>
+        <a href="#servicos" class="btn btn--outline btn--lg">
+          <i class="ri-arrow-down-line"></i> Ver Serviços
+        </a>
+      </div>
+
+      <!-- Especificações visuais — estilo inspirado em HUD de supercar -->
+      <div class="hero__specs" aria-label="Especificações rápidas">
+        <div class="spec">
+          <span class="spec__val">500<sup>+</sup></span>
+          <span class="spec__lbl">Clientes</span>
+        </div>
+        <div class="spec__div" aria-hidden="true"></div>
+        <div class="spec">
+          <span class="spec__val">4</span>
+          <span class="spec__lbl">Serviços</span>
+        </div>
+        <div class="spec__div" aria-hidden="true"></div>
+        <div class="spec">
+          <span class="spec__val">100<sup>%</sup></span>
+          <span class="spec__lbl">Satisfação</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Indicador de scroll — "Role para baixo" -->
+    <div class="hero__scroll-hint" aria-hidden="true">
+      <span class="scroll-dot"></span>
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 3: SERVIÇOS
+       Cada card tem: ícone, título, descrição e link.
+       Para adicionar serviço: copie um .servico-card completo.
+       Para mudar ícone: busque em https://remixicon.com
+  ═══════════════════════════════════════════════ -->
+  <section class="section servicos" id="servicos">
+    <div class="container">
+
+      <!-- Cabeçalho da seção -->
+      <div class="section__header reveal">
+        <span class="section__tag">O que fazemos</span>
+        <h2 class="section__titulo">Nossos <span class="text-gold">Serviços</span></h2>
+        <p class="section__desc">
+          Soluções completas para o seu veículo com mão de obra qualificada
+          e materiais de primeira linha com garantia.
+        </p>
+      </div>
+
+      <!-- Grid de cards de serviços -->
+      <div class="servicos__grid">
+
+        <!-- Card 1: Som Automotivo -->
+        <article class="servico-card reveal">
+          <div class="servico-card__icone" aria-hidden="true">
+            <i class="ri-speaker-2-line"></i>
+          </div>
+          <h3 class="servico-card__titulo">Som Automotivo</h3>
+          <p class="servico-card__desc">
+            Instalação profissional de alto-falantes, subwoofers, amplificadores
+            e módulos. Transforme a experiência sonora do seu veículo.
+          </p>
+          <a href="#contato" class="servico-card__link">
+            Solicitar <i class="ri-arrow-right-line"></i>
+          </a>
+        </article>
+
+        <!-- Card 2: Eletrônica -->
+        <article class="servico-card reveal">
+          <div class="servico-card__icone" aria-hidden="true">
+            <i class="ri-cpu-line"></i>
+          </div>
+          <h3 class="servico-card__titulo">Eletrônica Básica</h3>
+          <p class="servico-card__desc">
+            Diagnóstico e correção de problemas elétricos, instalação de
+            acessórios e revisão de fiações para manter seu carro funcionando.
+          </p>
+          <a href="#contato" class="servico-card__link">
+            Solicitar <i class="ri-arrow-right-line"></i>
+          </a>
+        </article>
+
+        <!-- Card 3: Baterias -->
+        <article class="servico-card reveal">
+          <div class="servico-card__icone" aria-hidden="true">
+            <i class="ri-battery-charge-line"></i>
+          </div>
+          <h3 class="servico-card__titulo">Troca de Baterias</h3>
+          <p class="servico-card__desc">
+            Venda e instalação de baterias automotivas com garantia.
+            Atendemos todas as marcas e modelos com agilidade.
+          </p>
+          <a href="#contato" class="servico-card__link">
+            Solicitar <i class="ri-arrow-right-line"></i>
+          </a>
+        </article>
+
+        <!-- Card 4: Faróis -->
+        <article class="servico-card reveal">
+          <div class="servico-card__icone" aria-hidden="true">
+            <i class="ri-flashlight-line"></i>
+          </div>
+          <h3 class="servico-card__titulo">Polimento de Faróis</h3>
+          <p class="servico-card__desc">
+            Restaure a visibilidade e aparência dos faróis. Removemos
+            o amarelamento e a opacidade, devolvendo claridade total.
+          </p>
+          <a href="#contato" class="servico-card__link">
+            Solicitar <i class="ri-arrow-right-line"></i>
+          </a>
+        </article>
+
+      </div><!-- /servicos__grid -->
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 4: SOBRE A EMPRESA
+       Edite os textos e a lista de diferenciais.
+       A imagem decorativa é um SVG embutido — pode substituir
+       por uma <img src="foto.jpg"> real da oficina.
+  ═══════════════════════════════════════════════ -->
+  <section class="section sobre" id="sobre">
+    <div class="container sobre__inner">
+
+      <!-- Lado esquerdo: Imagem/visual decorativo -->
+      <div class="sobre__visual reveal">
+        <!-- SVG decorativo com silhueta de Lamborghini Huracán -->
+        <div class="sobre__car-frame">
+          <svg class="sobre__svg" viewBox="0 0 560 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Carroceria inferior -->
+            <path d="M40 185 L80 145 L140 118 L220 98 L320 90 L400 95 L460 118 L510 150 L525 185 Z"
+                  fill="#D4A017" opacity="0.12" stroke="#D4A017" stroke-width="1.5"/>
+            <!-- Carroceria superior (cabine baixa Lamborghini) -->
+            <path d="M175 185 L185 148 L210 128 L260 112 L330 108 L390 112 L425 130 L445 155 L450 185 Z"
+                  fill="#D4A017" opacity="0.08" stroke="#D4A017" stroke-width="1"/>
+            <!-- Para-brisa inclinado (característica Lambo) -->
+            <line x1="210" y1="128" x2="185" y2="148" stroke="#88ccff" stroke-width="1.5" opacity="0.4"/>
+            <!-- Traseira agressiva -->
+            <line x1="425" y1="130" x2="445" y2="155" stroke="#88ccff" stroke-width="1.5" opacity="0.4"/>
+            <!-- Roda dianteira -->
+            <circle cx="170" cy="188" r="28" stroke="#D4A017" stroke-width="2" fill="#111"/>
+            <circle cx="170" cy="188" r="14" stroke="#D4A017" stroke-width="1" fill="none" opacity="0.5"/>
+            <circle cx="170" cy="188" r="5"  fill="#D4A017" opacity="0.6"/>
+            <!-- Raios da roda dianteira -->
+            <line x1="170" y1="174" x2="170" y2="160" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="184" y1="178" x2="190" y2="167" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="184" y1="198" x2="190" y2="209" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="170" y1="202" x2="170" y2="216" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="156" y1="198" x2="150" y2="209" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="156" y1="178" x2="150" y2="167" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <!-- Roda traseira -->
+            <circle cx="400" cy="188" r="30" stroke="#D4A017" stroke-width="2" fill="#111"/>
+            <circle cx="400" cy="188" r="15" stroke="#D4A017" stroke-width="1" fill="none" opacity="0.5"/>
+            <circle cx="400" cy="188" r="5"  fill="#D4A017" opacity="0.6"/>
+            <!-- Raios da roda traseira -->
+            <line x1="400" y1="173" x2="400" y2="158" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="415" y1="178" x2="421" y2="166" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="415" y1="199" x2="421" y2="211" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="400" y1="204" x2="400" y2="219" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="385" y1="199" x2="379" y2="211" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <line x1="385" y1="178" x2="379" y2="166" stroke="#D4A017" stroke-width="1" opacity="0.4"/>
+            <!-- Linha do chão -->
+            <line x1="30" y1="218" x2="540" y2="218" stroke="#D4A017" stroke-width="0.5" opacity="0.3"/>
+            <!-- Reflexo no chão -->
+            <ellipse cx="285" cy="222" rx="220" ry="6" fill="#D4A017" opacity="0.04"/>
+            <!-- Farol dianteiro LED -->
+            <ellipse cx="88" cy="160" rx="12" ry="6" fill="#ffffcc" opacity="0.7"/>
+            <!-- Luz farol traseiro -->
+            <rect x="498" y="155" width="14" height="6" rx="2" fill="#ff2200" opacity="0.8"/>
+            <!-- Saída de escape baixa (Lambo) -->
+            <rect x="478" y="195" width="22" height="8" rx="2" fill="#333" stroke="#D4A017" stroke-width="0.5" opacity="0.8"/>
+            <rect x="490" y="193" width="10" height="10" rx="2" fill="#333" stroke="#D4A017" stroke-width="0.5" opacity="0.8"/>
+            <!-- Spoiler baixo dianteiro -->
+            <path d="M55 190 L80 185 L140 182" stroke="#D4A017" stroke-width="1.5" opacity="0.5" fill="none"/>
+            <!-- Aerofólio traseiro -->
+            <rect x="458" y="128" width="52" height="6" rx="1" fill="#D4A017" opacity="0.6"/>
+            <line x1="462" y1="134" x2="462" y2="148" stroke="#D4A017" stroke-width="1.5" opacity="0.6"/>
+            <line x1="504" y1="134" x2="504" y2="148" stroke="#D4A017" stroke-width="1.5" opacity="0.6"/>
+            <!-- Raio decorativo (logo SM Elétrics) -->
+            <polygon points="278,18 258,68 276,68 264,112 298,54 278,54"
+                     fill="#D4A017" opacity="0.85"/>
+          </svg>
+
+          <!-- Badge de fundação sobreposto -->
+          <div class="sobre__badge">
+            <span class="badge__num">2025</span>
+            <span class="badge__txt">Fundação</span>
+          </div>
+        </div>
+
+        <!-- Linha decorativa dourada -->
+        <div class="sobre__linha" aria-hidden="true"></div>
+      </div>
+
+      <!-- Lado direito: Texto institucional -->
+      <div class="sobre__texto reveal">
+        <span class="section__tag">Quem somos</span>
+        <h2 class="section__titulo left">
+          Sobre a <span class="text-gold">SM Elétrics</span>
+        </h2>
+
+        <!-- Parágrafo 1 — edite livremente -->
+        <p>
+          Nascemos com um propósito claro: oferecer serviços automotivos
+          de excelência, com honestidade e comprometimento em cada
+          atendimento. A SM Elétrics é especializada em elétrica e
+          eletrônica automotiva, atendendo particulares e frotas.
+        </p>
+
+        <!-- Parágrafo 2 — edite livremente -->
+        <p>
+          Nossa equipe é formada por profissionais experientes e
+          apaixonados por automóveis, sempre atualizados com as
+          tecnologias mais modernas do mercado automotivo.
+        </p>
+
+        <!-- Lista de pontos fortes -->
+        <ul class="sobre__lista">
+          <li><i class="ri-check-double-fill"></i> Mão de obra especializada e certificada</li>
+          <li><i class="ri-check-double-fill"></i> Materiais de alta qualidade com garantia</li>
+          <li><i class="ri-check-double-fill"></i> Atendimento transparente e sem surpresas</li>
+          <li><i class="ri-check-double-fill"></i> Orçamento gratuito e sem compromisso</li>
+          <li><i class="ri-check-double-fill"></i> Todas as marcas e modelos de veículos</li>
+        </ul>
+
+        <a href="#contato" class="btn btn--gold">
+          Fale Conosco <i class="ri-arrow-right-line"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 5: STATS — Números da empresa
+       Os números animam ao entrar na tela (ver script.js # BLOCO CONTADOR).
+       Para alterar: mude o data-target e o texto do label.
+  ═══════════════════════════════════════════════ -->
+  <section class="stats" aria-label="Números da empresa">
+    <div class="container stats__grid">
+
+      <!-- Para editar: mude data-target para o número desejado -->
+      <div class="stat reveal">
+        <div class="stat__wrap">
+          <span class="stat__num" data-target="500">0</span>
+          <span class="stat__suf">+</span>
+        </div>
+        <span class="stat__label">Clientes Atendidos</span>
+      </div>
+
+      <div class="stat reveal">
+        <div class="stat__wrap">
+          <span class="stat__num" data-target="4">0</span>
+        </div>
+        <span class="stat__label">Serviços Especializados</span>
+      </div>
+
+      <div class="stat reveal">
+        <div class="stat__wrap">
+          <span class="stat__num" data-target="100">0</span>
+          <span class="stat__suf">%</span>
+        </div>
+        <span class="stat__label">Satisfação Garantida</span>
+      </div>
+
+      <div class="stat reveal">
+        <div class="stat__wrap">
+          <span class="stat__num" data-target="1">0</span>
+        </div>
+        <span class="stat__label">Ano de Excelência</span>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 6: DIFERENCIAIS
+       Cards com os pontos fortes da empresa.
+       Para adicionar: copie um .diferencial completo.
+       Para trocar ícones: use remixicon.com
+  ═══════════════════════════════════════════════ -->
+  <section class="section diferenciais" id="diferenciais">
+    <div class="container">
+
+      <div class="section__header reveal">
+        <span class="section__tag">Por que nos escolher</span>
+        <h2 class="section__titulo">Nossos <span class="text-gold">Diferenciais</span></h2>
+        <p class="section__desc">
+          Comprometidos em oferecer a melhor experiência do início ao
+          fim do serviço, sem exceções.
+        </p>
+      </div>
+
+      <div class="diferenciais__grid">
+
+        <div class="diferencial reveal">
+          <div class="diferencial__icone"><i class="ri-shield-star-fill"></i></div>
+          <h3>Qualidade Garantida</h3>
+          <p>Peças originais ou de primeira linha em todos os serviços. Garantia real em cada trabalho realizado.</p>
+        </div>
+
+        <div class="diferencial reveal">
+          <div class="diferencial__icone"><i class="ri-user-heart-line"></i></div>
+          <h3>Atendimento Humano</h3>
+          <p>Tratamos cada cliente como único. Explicamos tudo o que foi feito, sem jargões técnicos desnecessários.</p>
+        </div>
+
+        <div class="diferencial reveal">
+          <div class="diferencial__icone"><i class="ri-price-tag-3-fill"></i></div>
+          <h3>Preço Justo</h3>
+          <p>Orçamentos transparentes e competitivos. O preço combinado é sempre o preço cobrado — sem surpresas.</p>
+        </div>
+
+        <div class="diferencial reveal">
+          <div class="diferencial__icone"><i class="ri-timer-flash-line"></i></div>
+          <h3>Entrega no Prazo</h3>
+          <p>Respeitamos o seu tempo. Trabalhamos com prazos realistas e nos esforçamos para entregar antes.</p>
+        </div>
+
+        <div class="diferencial reveal">
+          <div class="diferencial__icone"><i class="ri-microscope-line"></i></div>
+          <h3>Tecnologia Moderna</h3>
+          <p>Equipamentos de diagnóstico atualizados para garantir precisão e assertividade em cada serviço.</p>
+        </div>
+
+        <div class="diferencial reveal">
+          <div class="diferencial__icone"><i class="ri-car-wash-line"></i></div>
+          <h3>Todas as Marcas</h3>
+          <p>Atendemos veículos de todas as marcas e modelos, nacionais e importados, sem exceção.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 7: CTA BANNER — Chamada para ação central
+       Fundo com efeito de grade + brilho dourado.
+       Edite o texto e o link do botão.
+  ═══════════════════════════════════════════════ -->
+  <section class="cta-banner reveal" aria-label="Chamada para ação">
+    <div class="cta-banner__bg" aria-hidden="true"></div>
+    <div class="container cta-banner__conteudo">
+      <h2>
+        Pronto para elevar<br/>
+        <span class="text-gold">o seu veículo?</span>
+      </h2>
+      <p>Entre em contato agora e receba um orçamento gratuito. Atendemos você hoje!</p>
+      <!-- Troque o número: 55 + DDD + número sem espaços -->
+      <a href="https://wa.me/5517996746002" aria-label="Chamar no WhatsApp"
+         target="_blank" rel="noopener"
+         class="btn btn--gold btn--lg">
+        <i class="ri-whatsapp-fill"></i> Chamar no WhatsApp
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 8: CONTATO
+       Dois blocos: info de contato (esquerda) + formulário (direita).
+       O formulário é simulado em JS (ver script.js # BLOCO FORMULÁRIO).
+       Para conectar a um backend real, substitua o setTimeout por fetch().
+  ═══════════════════════════════════════════════ -->
+  <section class="section contato" id="contato">
+    <div class="container">
+
+      <div class="section__header reveal">
+        <span class="section__tag">Fale conosco</span>
+        <h2 class="section__titulo">Entre em <span class="text-gold">Contato</span></h2>
+        <p class="section__desc">
+          Estamos prontos para te atender. Envie uma mensagem
+          ou nos chame diretamente pelo WhatsApp!
+        </p>
+      </div>
+
+      <div class="contato__inner">
+
+        <!-- Bloco de informações de contato -->
+        <div class="contato__info reveal">
+
+          <!-- Item: Localização — edite o endereço -->
+          <div class="info-item">
+            <div class="info-item__icone"><i class="ri-map-pin-2-fill"></i></div>
+            <div class="info-item__texto">
+              <h4>Localização</h4>
+              <p>Rua Paraíba, 652 — Centro<br/>São Francisco – SP, CEP 15710-003</p>
+            </div>
+          </div>
+
+          <!-- Item: Telefone — edite o número -->
+          <div class="info-item">
+            <div class="info-item__icone"><i class="ri-phone-fill"></i></div>
+            <div class="info-item__texto">
+              <h4>Telefone</h4>
+              <p>(00) 0000-0000</p>
+            </div>
+          </div>
+
+          <!-- Item: WhatsApp — edite o número no href também -->
+          <div class="info-item">
+            <div class="info-item__icone"><i class="ri-whatsapp-fill"></i></div>
+            <div class="info-item__texto">
+              <h4>WhatsApp</h4>
+              <a href="https://wa.me/5517996746002" target="_blank" rel="noopener">
+                (017) 99674-6002
+              </a>
+            </div>
+          </div>
+
+          <!-- Item: Horário de funcionamento — edite os horários -->
+          <div class="info-item">
+            <div class="info-item__icone"><i class="ri-time-fill"></i></div>
+            <div class="info-item__texto">
+              <h4>Funcionamento</h4>
+              <p>Seg–Sex: 08h às 18h<br/>Sáb: 08h às 13h</p>
+            </div>
+          </div>
+
+          <!-- Redes sociais — substitua os # pelos links reais -->
+          <div class="contato__social">
+            <a href="https://www.instagram.com/sm_eletrics_?igsh=MWc4aGZuZmg0ejY2Mg==" aria-label="Instagram" target="_blank" rel="noopener" class="social-link">
+              <i class="ri-instagram-line"></i>
+            </a>
+            <a href="#" aria-label="Facebook" target="_blank" rel="noopener" class="social-link">
+              <i class="ri-facebook-circle-line"></i>
+            </a>
+            <a href="https://wa.me/5517996746002" aria-label="WhatsApp" target="_blank" rel="noopener" class="social-link">
+              <i class="ri-whatsapp-line"></i>
+            </a>
+          </div>
+
+        </div><!-- /contato__info -->
+
+        <!-- Formulário de contato -->
+        <!-- novalidate = desativa o popup nativo, usamos validação customizada no JS -->
+        <form class="contato__form reveal" id="formContato" novalidate>
+
+          <!-- Campo: Nome -->
+          <div class="campo">
+            <label for="nome">Nome Completo <span class="obrig">*</span></label>
+            <input type="text" id="nome" name="nome"
+                   placeholder="Seu nome completo" required />
+            <!-- Mensagem de erro aparece aqui via JS -->
+            <span class="campo__erro" id="erroNome" role="alert"></span>
+          </div>
+
+          <!-- Campo: E-mail -->
+          <div class="campo">
+            <label for="email">E-mail <span class="obrig">*</span></label>
+            <input type="email" id="email" name="email"
+                   placeholder="seuemail@exemplo.com" required />
+            <span class="campo__erro" id="erroEmail" role="alert"></span>
+          </div>
+
+          <!-- Campo: Telefone (opcional) -->
+          <div class="campo">
+            <label for="telefone">Telefone / WhatsApp</label>
+            <input type="tel" id="telefone" name="telefone"
+                   placeholder="(00) 00000-0000" />
+          </div>
+
+          <!-- Campo: Serviço de interesse (select) -->
+          <div class="campo">
+            <label for="servico">Serviço de Interesse</label>
+            <select id="servico" name="servico">
+              <option value="">Selecione um serviço…</option>
+              <option value="som">Instalação de Som Automotivo</option>
+              <option value="eletronico">Serviços Eletrônicos Básicos</option>
+              <option value="bateria">Troca de Bateria</option>
+              <option value="farois">Polimento de Faróis</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+
+          <!-- Campo: Mensagem (textarea) — ocupa toda a largura -->
+          <div class="campo campo--full">
+            <label for="mensagem">Mensagem <span class="obrig">*</span></label>
+            <textarea id="mensagem" name="mensagem" rows="5"
+                      placeholder="Descreva o que você precisa…" required></textarea>
+            <span class="campo__erro" id="erroMensagem" role="alert"></span>
+          </div>
+
+          <!-- Botão de envio -->
+          <button type="submit" class="btn btn--gold btn--lg form__submit">
+            <i class="ri-send-plane-fill"></i> Enviar Mensagem
+          </button>
+
+          <!-- Área de feedback (sucesso/erro) — controlada pelo JS -->
+          <div class="form__feedback" id="formFeedback" role="status" aria-live="polite"></div>
+
+        </form><!-- /contato__form -->
+
+      </div><!-- /contato__inner -->
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SEÇÃO 9: FOOTER — Rodapé
+       4 colunas: marca | navegação | serviços | contato
+       No mobile vira 2 colunas, depois 1 coluna.
+  ═══════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+
+      <!-- Coluna 1: Marca -->
+      <div class="footer__marca">
+        <!-- Logo repetido no footer -->
+        <a href="#hero" class="header__logo footer__logo">
+          <span class="logo-sm">SM</span>
+          <span class="logo-barra">\</span>
+          <span class="logo-eletrics">ELÉTRICS</span>
+        </a>
+        <p>Especialistas em elétrica e eletrônica automotiva. Qualidade, confiança e transparência em cada serviço.</p>
+        <!-- Redes sociais no footer — mesmos links do contato -->
+        <div class="footer__social">
+          <a href="https://www.instagram.com/sm_eletrics_?igsh=MWc4aGZuZmg0ejY2Mg==" aria-label="Instagram" target="_blank" rel="noopener"><i class="ri-instagram-line"></i></a>
+          <a href="#" aria-label="Facebook"  target="_blank" rel="noopener"><i class="ri-facebook-circle-line"></i></a>
+          <a href="https://wa.me/5517996746002" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="ri-whatsapp-line"></i></a>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Links de navegação -->
+      <div class="footer__col">
+        <h5 class="footer__titulo">Navegação</h5>
+        <ul>
+          <li><a href="#hero">Início</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#diferenciais">Diferenciais</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 3: Serviços -->
+      <div class="footer__col">
+        <h5 class="footer__titulo">Serviços</h5>
+        <ul>
+          <li><a href="#servicos">Som Automotivo</a></li>
+          <li><a href="#servicos">Eletrônica Básica</a></li>
+          <li><a href="#servicos">Troca de Baterias</a></li>
+          <li><a href="#servicos">Polimento de Faróis</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 4: Contato rápido -->
+      <div class="footer__col">
+        <h5 class="footer__titulo">Contato</h5>
+        <!-- Edite os dados abaixo -->
+        <address class="footer__endereco">
+          <p><i class="ri-map-pin-line"></i> Rua Paraíba, 652 — São Francisco/SP</p>
+          <p><i class="ri-phone-line"></i> (017) 99674-6002</p>
+          <p>
+            <i class="ri-whatsapp-line"></i>
+            <a href="https://wa.me/5517996746002" target="_blank" rel="noopener">
+              (017) 99674-6002
+            </a>
+          </p>
+          <p><i class="ri-time-line"></i> Seg–Sex 08h–18h | Sáb 08h–13h</p>
+        </address>
+      </div>
+
+    </div><!-- /footer__grid -->
+
+    <!-- Barra inferior do footer -->
+    <div class="footer__bottom">
+      <p>
+        © <span id="anoAtual"></span> SM Elétrics. Todos os direitos reservados.
+      </p>
+      <p>
+        Feito com <i class="ri-heart-fill" style="color:#D4A017" aria-label="amor"></i>
+        para o segmento automotivo.
+      </p>
+    </div>
+
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # ELEMENTO FIXO 1: Botão WhatsApp flutuante
+       Aparece em todas as páginas, fixo no canto inferior direito.
+       Troque o número no href.
+  ═══════════════════════════════════════════════ -->
+  <a href="https://wa.me/5517996746002" aria-label="Falar no WhatsApp"
+     target="_blank"
+     rel="noopener"
+     class="whatsapp-float"
+     aria-label="Falar no WhatsApp">
+    <i class="ri-whatsapp-line"></i>
+    <!-- Tooltip que aparece no hover -->
+    <span class="whatsapp-float__tip">Fale Conosco!</span>
+  </a>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # ELEMENTO FIXO 2: Botão "Voltar ao topo"
+       Aparece após rolar 500px para baixo (ver script.js # BLOCO SCROLL)
+  ═══════════════════════════════════════════════ -->
+  <button class="topo-btn" id="topoBtn" aria-label="Voltar ao topo">
+    <i class="ri-arrow-up-line"></i>
+  </button>
+
+
+  <!-- ═══════════════════════════════════════════════
+       # SCRIPTS — Carregados no final do body (boa prática)
+       Ordem importa: Three.js ANTES do script.js
+  ═══════════════════════════════════════════════ -->
+
+  <!-- Three.js: biblioteca para renderização 3D (Lamborghini no hero) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Script principal do site -->
+  <script src="script.js"></script>
+
+</body>
+</html>

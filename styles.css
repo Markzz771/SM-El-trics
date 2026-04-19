@@ -1,0 +1,1546 @@
+/*
+╔══════════════════════════════════════════════════════════════╗
+║   SM ELÉTRICS — styles.css                                  ║
+║   Paleta: #000 (fundo) | #D4A017 (dourado) | #FFF (texto)  ║
+║   Fontes: Bebas Neue (títulos) + Barlow (corpo)             ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║   # ÍNDICE DE SEÇÕES:                                       ║
+║   ──────────────────────────────────────────────            ║
+║   1.  VARIÁVEIS & RESET        → Tokens do design           ║
+║   2.  UTILITÁRIOS              → Classes reutilizáveis      ║
+║   3.  BOTÕES                   → .btn variações             ║
+║   4.  HEADER                   → Topo fixo + mobile nav     ║
+║   5.  HERO                     → Banner 3D                  ║
+║   6.  SERVIÇOS                 → Cards de serviço           ║
+║   7.  SOBRE                    → Seção institucional        ║
+║   8.  STATS                    → Números animados           ║
+║   9.  DIFERENCIAIS             → Grid de pontos fortes      ║
+║   10. CTA BANNER               → Chamada para ação          ║
+║   11. CONTATO                  → Form + info                ║
+║   12. FOOTER                   → Rodapé                     ║
+║   13. BOTÕES FIXOS             → WhatsApp + topo            ║
+║   14. ANIMAÇÕES                → Keyframes & reveal         ║
+║   15. RESPONSIVO               → Media queries              ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+*/
+
+
+/* ============================================================
+   # 1. VARIÁVEIS & RESET
+   Altere aqui para mudar as cores do site inteiro.
+   --gold: cor principal dourada
+   --black/dark: fundos
+   --white/gray: textos
+   ============================================================ */
+
+/* Variáveis CSS — "tokens" do design system */
+:root {
+  /* Cores principais */
+  --gold:        #D4A017;   /* Dourado principal — altere para mudar o destaque */
+  --gold-claro:  #F0C040;   /* Dourado mais claro (hover) */
+  --gold-escuro: #A87C10;   /* Dourado mais escuro */
+
+  /* Fundos */
+  --preto:  #000000;   /* Preto puro */
+  --dark1:  #080808;   /* Quase preto (fundo principal) */
+  --dark2:  #101010;   /* Fundo alternado de seções */
+  --dark3:  #181818;   /* Cards e painéis */
+  --dark4:  #222222;   /* Bordas e separadores */
+
+  /* Textos */
+  --branco: #FFFFFF;
+  --cinza1: #CCCCCC;   /* Texto secundário */
+  --cinza2: #888888;   /* Texto terciário / placeholder */
+  --cinza3: #444444;   /* Labels e captions */
+
+  /* Semânticos */
+  --sucesso: #28C878;
+  --erro:    #E04040;
+
+  /* Tipografia */
+  --fonte-titulo: 'Bebas Neue', sans-serif;  /* Títulos e display */
+  --fonte-corpo:  'Barlow', sans-serif;       /* Textos e UI */
+  --fonte-codigo: 'Fira Code', monospace;     /* Comentários de código */
+
+  /* Layout */
+  --header-h:  72px;     /* Altura do header */
+  --raio:      5px;      /* Border-radius padrão */
+  --raio-lg:   10px;     /* Border-radius grande */
+  --trans:     0.28s ease;  /* Transição padrão */
+  --sombra-ouro: 0 0 24px rgba(212, 160, 23, 0.25);
+
+  /* Container */
+  --max-width: 1160px;
+  --padding-x: 24px;
+}
+
+/* Reset universal — zera margens e bordas de todos os elementos */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Configurações base do HTML */
+html {
+  scroll-behavior: smooth;  /* Scroll suave ao clicar em âncoras */
+  font-size: 16px;
+}
+
+/* Configurações base do body */
+body {
+  font-family: var(--fonte-corpo);
+  background: var(--dark1);
+  color: var(--branco);
+  line-height: 1.65;
+  overflow-x: hidden;  /* Evita scroll horizontal indesejado */
+}
+
+/* Reset básico de imagens */
+img { max-width: 100%; display: block; }
+
+/* Remove sublinhado dos links e herda cor */
+a { text-decoration: none; color: inherit; }
+
+/* Remove bullet points das listas */
+ul, ol { list-style: none; }
+
+/* Cursor pointer nos botões */
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+
+/* ============================================================
+   # 2. UTILITÁRIOS
+   Classes que podem ser usadas em qualquer elemento do HTML.
+   ============================================================ */
+
+/* Container centralizado com largura máxima */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--padding-x);
+}
+
+/* Espaçamento padrão de seções */
+.section { padding: 100px 0; }
+
+/* Cor dourada para spans em títulos */
+.text-gold { color: var(--gold); }
+
+/* Tag pequena acima dos títulos (ex: "O que fazemos") */
+.section__tag {
+  display: inline-block;
+  font-family: var(--fonte-corpo);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  padding: 4px 14px;
+  border-radius: 999px;  /* Pílula */
+  margin-bottom: 14px;
+}
+
+/* Cabeçalho centralizado de seção */
+.section__header {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 64px;
+}
+
+/* Título principal das seções */
+.section__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.9rem, 4vw, 3rem);  /* Responsivo: mínimo 1.9rem, máximo 3rem */
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  color: var(--branco);
+}
+
+/* Variante alinhada à esquerda (seção Sobre) */
+.section__titulo.left { text-align: left; }
+
+/* Descrição abaixo do título */
+.section__desc {
+  color: var(--cinza2);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+
+/* ============================================================
+   # 3. BOTÕES
+   .btn = base | --gold = dourado | --outline = transparente
+   --lg = tamanho grande
+   clip-path cria o corte angular nos cantos (estilo supercar)
+   ============================================================ */
+
+/* Base de todos os botões */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  font-family: var(--fonte-corpo);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--raio);
+  transition: all var(--trans);
+  cursor: pointer;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  /* Corte angular nos cantos — estilo agressivo Lamborghini */
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+/* Botão dourado (principal CTA) */
+.btn--gold {
+  background: var(--gold);
+  color: var(--preto);
+  border-color: var(--gold);
+}
+.btn--gold:hover {
+  background: var(--gold-claro);
+  border-color: var(--gold-claro);
+  transform: translateY(-3px);   /* Sobe levemente no hover */
+  box-shadow: var(--sombra-ouro);
+}
+
+/* Botão outline (secundário) */
+.btn--outline {
+  background: transparent;
+  color: var(--branco);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.btn--outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-3px);
+}
+
+/* Modificador de tamanho grande */
+.btn--lg {
+  padding: 14px 34px;
+  font-size: 0.92rem;
+}
+
+
+/* ============================================================
+   # 4. HEADER
+   Fixo no topo com efeito de vidro (glassmorphism) ao rolar.
+   A classe .scrolled é adicionada pelo JavaScript.
+   ============================================================ */
+
+/* Container do header — fixo, z-index alto */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--header-h);
+  /* Vidro semi-transparente — efeito inicial */
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(212, 160, 23, 0.1);
+  transition: background var(--trans), box-shadow var(--trans);
+}
+
+/* Quando o usuário rola a página (classe adicionada pelo JS) */
+.header.scrolled {
+  background: rgba(0, 0, 0, 0.96);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* Linha interna: flex para alinhar logo | nav | cta | hamburguer */
+.header__inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 28px;
+}
+
+/* ── Logo ── */
+/* Flex inline com as partes do logo */
+.header__logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* "SM" em branco */
+.logo-sm {
+  font-family: var(--fonte-titulo);
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+  color: var(--branco);
+}
+
+/* Barra separadora "\" em dourado */
+.logo-barra {
+  font-family: var(--fonte-titulo);
+  font-size: 1.55rem;
+  color: var(--gold);
+  margin: 0 2px;
+}
+
+/* "ELÉTRICS" em dourado */
+.logo-eletrics {
+  font-family: var(--fonte-titulo);
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+
+/* "EST. 2026" pequeno abaixo */
+.logo-ano {
+  font-family: var(--fonte-corpo);
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  color: var(--cinza2);
+  margin-left: 8px;
+  align-self: flex-end;
+  padding-bottom: 3px;
+}
+
+/* ── Nav Desktop ── */
+.header__nav { margin-left: auto; }  /* Empurra nav para a direita */
+
+.header__nav ul {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+/* Links do menu */
+.header__nav a {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cinza1);
+  position: relative;
+  padding-bottom: 4px;
+  transition: color var(--trans);
+}
+
+/* Linha dourada que cresce no hover (pseudo-elemento) */
+.header__nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width var(--trans);
+}
+
+/* Estado hover e ativo */
+.header__nav a:hover,
+.header__nav a.ativo {
+  color: var(--gold);
+}
+.header__nav a:hover::after,
+.header__nav a.ativo::after {
+  width: 100%;
+}
+
+/* Botão CTA no header */
+.header__cta { margin-left: 16px; }
+
+/* ── Hamburguer (mobile) ── */
+/* Escondido no desktop, aparece no mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* As 3 linhas do hamburguer */
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--branco);
+  border-radius: 2px;
+  transition: transform var(--trans), opacity var(--trans);
+}
+
+/* Animação de X quando o menu abre */
+.hamburger.aberto span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.aberto span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+.hamburger.aberto span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ── Menu Mobile ── */
+/* Escondido por padrão, expande com .aberto */
+.mobile-nav {
+  display: none;        /* Só aparece no mobile (ver media query) */
+  max-height: 0;
+  overflow: hidden;
+  background: var(--dark2);
+  border-top: 1px solid rgba(212, 160, 23, 0.12);
+  transition: max-height 0.4s ease;
+}
+
+/* Estado aberto */
+.mobile-nav.aberto { max-height: 500px; }
+
+.mobile-nav ul {
+  padding: 20px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Links do menu mobile */
+.mnav-link {
+  display: block;
+  padding: 11px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cinza1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: color var(--trans);
+}
+.mnav-link:hover { color: var(--gold); }
+
+/* Botão CTA no menu mobile */
+.mnav-cta {
+  margin-top: 14px;
+  width: 100%;
+  justify-content: center;
+}
+
+
+/* ============================================================
+   # 5. HERO — Banner principal
+   O canvas (#lambo-canvas) do Three.js preenche todo o fundo.
+   O conteúdo de texto fica em .hero__content sobreposto.
+   ============================================================ */
+
+/* Container do hero */
+.hero {
+  position: relative;
+  min-height: 100vh;          /* Ocupa toda a altura da tela */
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--preto);
+  padding-top: var(--header-h);
+}
+
+/* ── Canvas 3D ── */
+/* # ALTERADO: canvas ocupa apenas a metade direita do hero */
+#lambo-canvas {
+  position: absolute;
+  top: 0;
+  right: 0;             /* # ancora no lado direito */
+  bottom: 0;
+  left: 45%;            /* # começa em 45% da largura — carro fica à direita */
+  width: 55% !important;/* # largura de 55% para cobrir o lado direito */
+  height: 100% !important;
+  display: block;
+}
+
+/* Overlay escuro sobre o canvas — garante legibilidade do texto */
+/* Ajuste a opacidade para mais/menos transparência */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0, 0, 0, 0.92) 0%,     /* # ALTERADO: esquerda bem escura — texto legível */
+    rgba(0, 0, 0, 0.75) 44%,    /* # ALTERADO: transição antes do carro */
+    rgba(0, 0, 0, 0.10) 65%,    /* # ALTERADO: lado direito quase transparente */
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  pointer-events: none;  /* Deixa cliques passarem para o canvas */
+}
+
+/* Grade decorativa tecnológica — linhas finas douradas */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212, 160, 23, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 160, 23, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;  /* Tamanho das células da grade */
+  pointer-events: none;
+}
+
+/* Conteúdo do hero (texto + botões) — fica acima do canvas */
+.hero__content {
+  position: relative;
+  z-index: 2;       /* Fica acima do canvas e dos overlays */
+  max-width: 620px;
+  padding: 60px 0;
+}
+
+/* Tag/eyebrow acima do título principal */
+.hero__eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  /* Animação de entrada — ver keyframes no final */
+  opacity: 0;
+  animation: fadeUp 0.8s 0.1s forwards;
+}
+
+/* Título principal do hero */
+.hero__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(3rem, 7vw, 5.5rem);  /* Cresce com a tela */
+  line-height: 0.96;
+  letter-spacing: 0.03em;
+  margin-bottom: 22px;
+  color: var(--branco);
+  /* Animação de entrada */
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s forwards;
+}
+
+/* "e Excelência" em itálico dourado */
+.hero__titulo em {
+  color: var(--gold);
+  font-style: normal;
+  /* Efeito de sublinhado decorativo */
+  text-decoration: underline;
+  text-decoration-color: rgba(212, 160, 23, 0.3);
+  text-underline-offset: 6px;
+}
+
+/* Subtítulo */
+.hero__sub {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--cinza1);
+  font-weight: 300;
+  margin-bottom: 38px;
+  line-height: 1.8;
+  max-width: 500px;
+  /* Animação de entrada */
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s forwards;
+}
+
+/* Container dos botões CTA */
+.hero__acoes {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  /* Animação de entrada */
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s forwards;
+}
+
+/* ── Specs ── números rápidos abaixo dos botões */
+.hero__specs {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 52px;
+  /* Animação de entrada */
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s forwards;
+}
+
+/* Cada item de spec (número + label) */
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Número grande */
+.spec__val {
+  font-family: var(--fonte-titulo);
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* sup para + e % (expoente) */
+.spec__val sup {
+  font-size: 1rem;
+  vertical-align: super;
+  color: var(--gold);
+}
+
+/* Label da spec */
+.spec__lbl {
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cinza2);
+}
+
+/* Divisor vertical entre specs */
+.spec__div {
+  width: 1px;
+  height: 36px;
+  background: rgba(212, 160, 23, 0.25);
+}
+
+/* ── Indicador de scroll ── */
+/* Bolinha animada que indica "role para baixo" */
+.hero__scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 40px;
+  border: 1.5px solid rgba(212, 160, 23, 0.35);
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  padding-top: 7px;
+  z-index: 2;
+}
+
+/* Bolinha interna que desce e some */
+.scroll-dot {
+  display: block;
+  width: 4px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+
+/* ============================================================
+   # 6. SERVIÇOS
+   Fundo levemente diferente para criar ritmo visual.
+   Cards com borda esquerda animada no hover.
+   ============================================================ */
+
+.servicos { background: var(--dark2); }
+
+/* Grid de 4 colunas (ajusta no mobile) */
+.servicos__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 4 colunas no desktop */
+  gap: 24px;
+}
+
+/* Card individual de serviço */
+.servico-card {
+  background: var(--dark3);
+  border: 1px solid rgba(212, 160, 23, 0.1);
+  border-radius: var(--raio);
+  padding: 36px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--trans), transform var(--trans), box-shadow var(--trans);
+}
+
+/* Linha dourada da esquerda que sobe no hover */
+.servico-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;        /* Começa embaixo */
+  width: 3px;
+  height: 0;        /* Começa com altura zero */
+  background: var(--gold);
+  transition: height 0.4s ease;
+}
+
+/* Efeito hover: eleva o card e mostra a linha */
+.servico-card:hover {
+  border-color: rgba(212, 160, 23, 0.35);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), var(--sombra-ouro);
+}
+.servico-card:hover::before { height: 100%; }  /* Linha sobe até 100% */
+
+/* Ícone do card */
+.servico-card__icone {
+  width: 56px;
+  height: 56px;
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: var(--raio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  color: var(--gold);
+  transition: background var(--trans);
+}
+.servico-card:hover .servico-card__icone {
+  background: rgba(212, 160, 23, 0.18);
+}
+
+/* Título do card */
+.servico-card__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  color: var(--branco);
+}
+
+/* Descrição do card */
+.servico-card__desc {
+  color: var(--cinza2);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  flex: 1;  /* Empurra o link para baixo */
+}
+
+/* Link "Solicitar →" */
+.servico-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  transition: gap var(--trans);
+  margin-top: 4px;
+}
+.servico-card__link:hover { gap: 12px; }  /* Flecha se afasta */
+
+
+/* ============================================================
+   # 7. SOBRE
+   Layout de duas colunas: imagem SVG + texto.
+   No mobile vira uma coluna só.
+   ============================================================ */
+
+.sobre { background: var(--dark1); }
+
+/* Duas colunas iguais */
+.sobre__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* Coluna visual esquerda */
+.sobre__visual { position: relative; }
+
+/* Frame do carro SVG */
+.sobre__car-frame {
+  position: relative;
+  padding: 20px;
+  background: rgba(212, 160, 23, 0.03);
+  border: 1px solid rgba(212, 160, 23, 0.1);
+  border-radius: var(--raio-lg);
+}
+
+/* SVG do carro Lamborghini */
+.sobre__svg {
+  width: 100%;
+  filter: drop-shadow(0 0 20px rgba(212, 160, 23, 0.15));
+  animation: carFloat 4s ease-in-out infinite;  /* Leve flutuação */
+}
+
+/* Badge de fundação sobreposto */
+.sobre__badge {
+  position: absolute;
+  bottom: -12px;
+  right: 20px;
+  background: var(--gold);
+  color: var(--preto);
+  border-radius: var(--raio);
+  padding: 10px 18px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(212, 160, 23, 0.4);
+}
+.badge__num {
+  display: block;
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.badge__txt {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Linha decorativa dourada horizontal */
+.sobre__linha {
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-top: 24px;
+  border-radius: 999px;
+}
+
+/* Coluna de texto direita */
+.sobre__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Parágrafos do texto institucional */
+.sobre__texto p {
+  color: var(--cinza2);
+  font-size: 0.96rem;
+  line-height: 1.8;
+}
+
+/* Lista de benefícios */
+.sobre__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 4px 0;
+}
+.sobre__lista li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--cinza1);
+}
+.sobre__lista i {
+  color: var(--gold);
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   # 8. STATS — Números animados
+   Fundo dourado — destaque entre as seções.
+   Os números são animados pelo JavaScript.
+   ============================================================ */
+
+.stats {
+  background: var(--gold);     /* Fundo dourado */
+  padding: 60px 0;
+}
+
+/* 4 colunas com os stats */
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+/* Cada stat individual */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Wrapper do número + sufixo */
+.stat__wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+/* Número grande — animado pelo JS */
+.stat__num {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 0.04em;
+  color: var(--preto);
+  line-height: 1;
+}
+
+/* Sufixo + ou % */
+.stat__suf {
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  color: var(--preto);
+  opacity: 0.7;
+}
+
+/* Label abaixo do número */
+.stat__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+
+/* ============================================================
+   # 9. DIFERENCIAIS
+   Grid de 3×2 = 6 cards.
+   ============================================================ */
+
+.diferenciais { background: var(--dark2); }
+
+/* Grid 3 colunas */
+.diferenciais__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Card de diferencial */
+.diferencial {
+  background: var(--dark3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--raio);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color var(--trans), transform var(--trans);
+}
+.diferencial:hover {
+  border-color: rgba(212, 160, 23, 0.3);
+  transform: translateY(-5px);
+}
+
+/* Ícone grande */
+.diferencial__icone {
+  font-size: 2.2rem;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+/* Título */
+.diferencial h3 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--branco);
+}
+
+/* Descrição */
+.diferencial p {
+  color: var(--cinza2);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+
+/* ============================================================
+   # 10. CTA BANNER
+   Seção de chamada central com fundo preto e brilho dourado.
+   ============================================================ */
+
+.cta-banner {
+  position: relative;
+  padding: 100px 0;
+  overflow: hidden;
+  background: var(--dark1);
+  text-align: center;
+}
+
+/* Fundo com efeito de brilho radial dourado */
+.cta-banner__bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 50%,
+    rgba(212, 160, 23, 0.07) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Bordas decorativas nos cantos */
+.cta-banner::before,
+.cta-banner::after {
+  content: '';
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.06) 0%, transparent 70%);
+}
+.cta-banner::before { top: -100px; left: -80px; }
+.cta-banner::after  { bottom: -100px; right: -80px; }
+
+/* Conteúdo centralizado */
+.cta-banner__conteudo {
+  position: relative;
+  z-index: 2;
+}
+
+/* Título grande */
+.cta-banner__conteudo h2 {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+/* Subtítulo */
+.cta-banner__conteudo p {
+  color: var(--cinza2);
+  margin-bottom: 36px;
+  font-size: 1rem;
+}
+
+
+/* ============================================================
+   # 11. CONTATO
+   Duas colunas: informações (esquerda) + formulário (direita).
+   ============================================================ */
+
+.contato { background: var(--dark1); }
+
+/* Grid de 2 colunas */
+.contato__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;  /* Formulário maior que as infos */
+  gap: 64px;
+  align-items: start;
+}
+
+/* ── Informações de contato ── */
+.contato__info {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Item individual de info */
+.info-item {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* Ícone do item */
+.info-item__icone {
+  width: 46px;
+  height: 46px;
+  background: rgba(212, 160, 23, 0.08);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: var(--raio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+/* Título e texto do item */
+.info-item h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.info-item p,
+.info-item a {
+  color: var(--cinza2);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.info-item a:hover { color: var(--gold); }
+
+/* Ícones de redes sociais */
+.contato__social {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.social-link {
+  width: 42px;
+  height: 42px;
+  background: var(--dark3);
+  border: 1px solid rgba(212, 160, 23, 0.15);
+  border-radius: var(--raio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--cinza2);
+  transition: all var(--trans);
+}
+.social-link:hover {
+  background: var(--gold);
+  color: var(--preto);
+  border-color: var(--gold);
+  transform: translateY(-3px);
+}
+
+/* ── Formulário ── */
+/* Grid de 2 colunas (campos ficam lado a lado) */
+.contato__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Campo individual */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Campo que ocupa as 2 colunas */
+.campo--full { grid-column: 1 / -1; }
+
+/* Label do campo */
+.campo label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cinza2);
+}
+
+/* Asterisco de campo obrigatório */
+.obrig { color: var(--gold); }
+
+/* Estilos compartilhados: input, select e textarea */
+.campo input,
+.campo select,
+.campo textarea {
+  background: var(--dark3);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--raio);
+  padding: 12px 16px;
+  color: var(--branco);
+  font-family: var(--fonte-corpo);
+  font-size: 0.93rem;
+  outline: none;
+  width: 100%;
+  transition: border-color var(--trans), box-shadow var(--trans);
+}
+
+/* Placeholder dos campos */
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Estado de foco (quando clicado) */
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.12);
+}
+
+/* Estilo especial do select */
+.campo select {
+  appearance: none;  /* Remove seta nativa do browser */
+  cursor: pointer;
+  /* Seta customizada como SVG inline */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23D4A017' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+.campo select option { background: var(--dark3); }
+
+/* Textarea não tem resize horizontal */
+.campo textarea { resize: vertical; min-height: 130px; }
+
+/* Mensagem de erro do campo */
+.campo__erro {
+  font-size: 0.74rem;
+  color: var(--erro);
+  min-height: 16px;
+  font-weight: 500;
+}
+
+/* Botão de envio — ocupa 2 colunas */
+.form__submit { grid-column: 1 / -1; width: fit-content; }
+
+/* Feedback de sucesso/erro após envio */
+.form__feedback {
+  grid-column: 1 / -1;
+  padding: 14px 18px;
+  border-radius: var(--raio);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: none;  /* Escondido por padrão — JS exibe após envio */
+}
+.form__feedback.sucesso {
+  display: block;
+  background: rgba(40, 200, 120, 0.08);
+  border: 1px solid rgba(40, 200, 120, 0.3);
+  color: var(--sucesso);
+}
+.form__feedback.erro-geral {
+  display: block;
+  background: rgba(224, 64, 64, 0.08);
+  border: 1px solid rgba(224, 64, 64, 0.3);
+  color: var(--erro);
+}
+
+
+/* ============================================================
+   # 12. FOOTER
+   4 colunas no desktop, responsivo no mobile.
+   ============================================================ */
+
+.footer {
+  background: var(--dark2);
+  border-top: 1px solid rgba(212, 160, 23, 0.12);
+}
+
+/* Grid de 4 colunas */
+.footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 48px;
+  padding: 80px var(--padding-x) 56px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* Coluna da marca */
+.footer__marca {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.footer__logo { font-size: 1.5rem; }  /* Logo um pouco menor */
+
+.footer__marca p {
+  color: var(--cinza2);
+  font-size: 0.87rem;
+  line-height: 1.7;
+  max-width: 280px;
+}
+
+/* Ícones sociais no footer */
+.footer__social {
+  display: flex;
+  gap: 10px;
+}
+.footer__social a {
+  width: 38px;
+  height: 38px;
+  background: var(--dark3);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--raio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--cinza2);
+  transition: all var(--trans);
+}
+.footer__social a:hover {
+  background: var(--gold);
+  color: var(--preto);
+  border-color: var(--gold);
+}
+
+/* Colunas de links */
+.footer__col { display: flex; flex-direction: column; gap: 4px; }
+
+/* Título da coluna */
+.footer__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--branco);
+  margin-bottom: 14px;
+}
+
+/* Links das colunas */
+.footer__col a,
+.footer__col li a {
+  font-size: 0.87rem;
+  color: var(--cinza2);
+  transition: color var(--trans);
+  padding: 4px 0;
+  display: block;
+}
+.footer__col a:hover,
+.footer__col li a:hover { color: var(--gold); }
+
+/* Endereço no footer */
+.footer__endereco {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer__endereco p,
+.footer__endereco a {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.87rem;
+  color: var(--cinza2);
+}
+.footer__endereco i { color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+.footer__endereco a:hover { color: var(--gold); }
+
+/* Barra inferior do footer */
+.footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 22px var(--padding-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.footer__bottom p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+
+/* ============================================================
+   # 13. BOTÕES FIXOS
+   WhatsApp flutuante + botão voltar ao topo.
+   Ambos aparecem sobre todos os outros elementos (z-index alto).
+   ============================================================ */
+
+/* ── WhatsApp flutuante ── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  width: 58px;
+  height: 58px;
+  background: #25D366;   /* Cor oficial do WhatsApp */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+  transition: transform var(--trans), box-shadow var(--trans);
+}
+.whatsapp-float:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.65);
+}
+
+/* Tooltip que aparece ao lado no hover */
+.whatsapp-float__tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  background: var(--dark3);
+  color: var(--branco);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--trans);
+}
+.whatsapp-float:hover .whatsapp-float__tip { opacity: 1; }
+
+/* ── Botão "Voltar ao topo" ── */
+.topo-btn {
+  position: fixed;
+  bottom: 96px;
+  right: 28px;
+  z-index: 999;
+  width: 44px;
+  height: 44px;
+  background: var(--dark3);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  border-radius: var(--raio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--gold);
+  /* Escondido por padrão — JS adiciona .visivel */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(14px);
+  transition: all var(--trans);
+}
+/* Estado visível (adicionado pelo JS após rolar 500px) */
+.topo-btn.visivel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.topo-btn:hover {
+  background: var(--gold);
+  color: var(--preto);
+  transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   # 14. ANIMAÇÕES & REVEAL
+   .reveal: estado inicial (invisível + deslocado)
+   .reveal.visivel: estado final (visível na posição correta)
+   A transição é ativada pelo IntersectionObserver no JS.
+   ============================================================ */
+
+/* Estado inicial dos elementos com reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+/* Estado visível — ativado pelo JS */
+.reveal.visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Keyframes ── */
+
+/* fadeUp: usado nas animações do hero */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* scrollBounce: bolinha do indicador de scroll */
+@keyframes scrollBounce {
+  0%   { transform: translateY(0);   opacity: 1; }
+  80%  { transform: translateY(16px); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 0; }
+}
+
+/* carFloat: flutuação suave do SVG do carro */
+@keyframes carFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+
+/* ============================================================
+   # 15. RESPONSIVO — Media Queries
+   Breakpoints:
+   - 1024px: tablet grande
+   - 860px:  tablet / menu mobile
+   - 640px:  celular
+   ============================================================ */
+
+/* ── Tablet grande ── */
+@media (max-width: 1024px) {
+  .servicos__grid { grid-template-columns: repeat(2, 1fr); }  /* 2 colunas */
+  .sobre__inner   { gap: 48px; }
+  .diferenciais__grid { grid-template-columns: repeat(2, 1fr); }
+  .footer__grid   { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+}
+
+/* ── Tablet / Mobile menu ── */
+@media (max-width: 860px) {
+  /* Esconde nav e CTA do desktop */
+  .header__nav,
+  .header__cta { display: none; }
+
+  /* Mostra hamburguer */
+  .hamburger { display: flex; }
+
+  /* Mostra menu mobile */
+  .mobile-nav { display: block; }
+
+  /* Sobre vira coluna única */
+  .sobre__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  /* Stats: 2 colunas */
+  .stats__grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Contato: coluna única */
+  .contato__inner { grid-template-columns: 1fr; }
+}
+
+/* ── Celular ── */
+@media (max-width: 640px) {
+  /* Reduz padding das seções */
+  .section { padding: 64px 0; }
+
+  /* Reduz espaço do hero */
+  .hero__specs { gap: 16px; }
+
+  /* Serviços: 1 coluna */
+  .servicos__grid { grid-template-columns: 1fr; }
+
+  /* Stats: 2 colunas menores */
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+
+  /* Diferenciais: 1 coluna */
+  .diferenciais__grid { grid-template-columns: 1fr; }
+
+  /* Formulário: 1 coluna */
+  .contato__form { grid-template-columns: 1fr; }
+  .form__submit  { width: 100%; justify-content: center; }
+
+  /* Footer: 1 coluna */
+  .footer__grid  { grid-template-columns: 1fr; }
+
+  /* Bottom do footer: centralizado */
+  .footer__bottom {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  /* Specs do hero: compacto */
+  .hero__specs {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .spec__div { display: none; }  /* Remove divisor no mobile */
+}
