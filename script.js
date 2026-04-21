@@ -1030,3 +1030,142 @@ function iniciar3DLamborghini() {
   animar(0);
 
 }
+/* ============================================================
+# WHATSAPP + FORMULÁRIO (ADICIONAL SEGURO)
+# NÃO ALTERA NADA DO CÓDIGO EXISTENTE
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ============================================================
+  # CONFIG WHATSAPP
+  ============================================================ */
+
+  const WHATSAPP_NUMBER = "5517999999999"; // 🔴 TROQUE AQUI
+
+  const montarMensagemWhatsApp = () => {
+    const msg = "Olá! Vim pelo site da SM ELÉTRICS e gostaria de um orçamento.";
+    return encodeURIComponent(msg);
+  };
+
+  const btnWhats = document.querySelector(".whatsapp-float");
+
+  if (btnWhats) {
+    btnWhats.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${montarMensagemWhatsApp()}`;
+      window.open(url, "_blank");
+    });
+  }
+
+  /* ============================================================
+  # SANITIZAÇÃO DE DADOS
+  ============================================================ */
+
+  function sanitizar(valor) {
+    return String(valor || "")
+      .replace(/</g, "")
+      .replace(/>/g, "")
+      .trim();
+  }
+
+  /* ============================================================
+  # MONTAR MENSAGEM PROFISSIONAL
+  ============================================================ */
+
+  function montarMensagem(dados) {
+    return `
+📩 NOVO CONTATO - SM ELÉTRICS
+
+👤 Nome: ${dados.nome}
+📧 Email: ${dados.email}
+📱 Telefone: ${dados.telefone || "Não informado"}
+
+💬 Mensagem:
+${dados.mensagem}
+
+---
+Enviado pelo site oficial
+`.trim();
+  }
+
+  /* ============================================================
+  # ENVIO PARA BACKEND (API REAL)
+  ============================================================ */
+
+  async function enviarMensagem(dados) {
+    try {
+      const res = await fetch("/api/enviar-contato", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+
+      if (!res.ok) throw new Error("Erro no servidor");
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  /* ============================================================
+  # FORMULÁRIO DE CONTATO
+  ============================================================ */
+
+  const form = document.querySelector(".contato__form");
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const dados = {
+        nome: sanitizar(form.querySelector("[name='nome']")?.value),
+        email: sanitizar(form.querySelector("[name='email']")?.value),
+        telefone: sanitizar(form.querySelector("[name='telefone']")?.value),
+        mensagem: sanitizar(form.querySelector("[name='mensagem']")?.value),
+      };
+
+      /* Validação básica */
+      if (!dados.nome || !dados.email || !dados.mensagem) {
+        mostrarFeedback("erro", "Preencha os campos obrigatórios");
+        return;
+      }
+
+      const sucesso = await enviarMensagem({
+        ...dados,
+        mensagemFormatada: montarMensagem(dados),
+      });
+
+      if (sucesso) {
+        mostrarFeedback("sucesso", "Mensagem enviada com sucesso!");
+        form.reset();
+      } else {
+        mostrarFeedback("erro", "Falha ao enviar mensagem");
+      }
+    });
+  }
+
+  /* ============================================================
+  # FEEDBACK VISUAL
+  ============================================================ */
+
+  function mostrarFeedback(tipo, texto) {
+    const box = document.querySelector(".form__feedback");
+    if (!box) return;
+
+    box.className = "form__feedback";
+
+    if (tipo === "sucesso") {
+      box.classList.add("sucesso");
+    } else {
+      box.classList.add("erro-geral");
+    }
+
+    box.textContent = texto;
+  }
+
+});
