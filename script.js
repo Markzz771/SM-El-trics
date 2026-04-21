@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarBotaoTopo();
   iniciarAnoDinamico();
   iniciar3DLamborghini();
+  iniciarWhatsAppAuto();
 
 });
 
@@ -1031,141 +1032,38 @@ function iniciar3DLamborghini() {
 
 }
 /* ============================================================
-# WHATSAPP + FORMULÁRIO (ADICIONAL SEGURO)
-# NÃO ALTERA NADA DO CÓDIGO EXISTENTE
-============================================================ */
+   # BLOCO 11: WHATSAPP - BOTÕES AUTOMÁTICOS
+   ============================================================ */
+function iniciarWhatsAppAuto() {
 
-document.addEventListener("DOMContentLoaded", () => {
+  const numeroEmpresa = '5517996746002';
 
-  /* ============================================================
-  # CONFIG WHATSAPP
-  ============================================================ */
+  // Seleciona qualquer botão relacionado a contato/WhatsApp
+  const botoes = document.querySelectorAll(
+    'a[href*="whatsapp"], .whatsapp, .btn-whatsapp, .btn-contato, [data-whatsapp]'
+  );
 
-  const WHATSAPP_NUMBER = "5517999999999"; // 🔴 TROQUE AQUI
+  botoes.forEach(btn => {
 
-  const montarMensagemWhatsApp = () => {
-    const msg = "Olá! Vim pelo site da SM ELÉTRICS e gostaria de um orçamento.";
-    return encodeURIComponent(msg);
-  };
-
-  const btnWhats = document.querySelector(".whatsapp-float");
-
-  if (btnWhats) {
-    btnWhats.addEventListener("click", (e) => {
+    btn.addEventListener('click', (e) => {
       e.preventDefault();
 
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${montarMensagemWhatsApp()}`;
-      window.open(url, "_blank");
-    });
-  }
+      // Mensagem padrão
+      let mensagem = 'Olá! Vim pelo site da SM Elétrics e gostaria de mais informações.';
 
-  /* ============================================================
-  # SANITIZAÇÃO DE DADOS
-  ============================================================ */
-
-  function sanitizar(valor) {
-    return String(valor || "")
-      .replace(/</g, "")
-      .replace(/>/g, "")
-      .trim();
-  }
-
-  /* ============================================================
-  # MONTAR MENSAGEM PROFISSIONAL
-  ============================================================ */
-
-  function montarMensagem(dados) {
-    return `
-📩 NOVO CONTATO - SM ELÉTRICS
-
-👤 Nome: ${dados.nome}
-📧 Email: ${dados.email}
-📱 Telefone: ${dados.telefone || "Não informado"}
-
-💬 Mensagem:
-${dados.mensagem}
-
----
-Enviado pelo site oficial
-`.trim();
-  }
-
-  /* ============================================================
-  # ENVIO PARA BACKEND (API REAL)
-  ============================================================ */
-
-  async function enviarMensagem(dados) {
-    try {
-      const res = await fetch("/api/enviar-contato", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dados),
-      });
-
-      if (!res.ok) throw new Error("Erro no servidor");
-      return true;
-    } catch (err) {
-      console.error(err);
-      return false;
-    }
-  }
-
-  /* ============================================================
-  # FORMULÁRIO DE CONTATO
-  ============================================================ */
-
-  const form = document.querySelector(".contato__form");
-
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const dados = {
-        nome: sanitizar(form.querySelector("[name='nome']")?.value),
-        email: sanitizar(form.querySelector("[name='email']")?.value),
-        telefone: sanitizar(form.querySelector("[name='telefone']")?.value),
-        mensagem: sanitizar(form.querySelector("[name='mensagem']")?.value),
-      };
-
-      /* Validação básica */
-      if (!dados.nome || !dados.email || !dados.mensagem) {
-        mostrarFeedback("erro", "Preencha os campos obrigatórios");
-        return;
+      // Se quiser mensagem personalizada no botão
+      if (btn.dataset.message) {
+        mensagem = btn.dataset.message;
       }
 
-      const sucesso = await enviarMensagem({
-        ...dados,
-        mensagemFormatada: montarMensagem(dados),
-      });
+      const texto = encodeURIComponent(mensagem);
 
-      if (sucesso) {
-        mostrarFeedback("sucesso", "Mensagem enviada com sucesso!");
-        form.reset();
-      } else {
-        mostrarFeedback("erro", "Falha ao enviar mensagem");
-      }
+      window.open(
+        `https://wa.me/${numeroEmpresa}?text=${texto}`,
+        '_blank',
+        'noopener,noreferrer'
+      );
     });
-  }
 
-  /* ============================================================
-  # FEEDBACK VISUAL
-  ============================================================ */
-
-  function mostrarFeedback(tipo, texto) {
-    const box = document.querySelector(".form__feedback");
-    if (!box) return;
-
-    box.className = "form__feedback";
-
-    if (tipo === "sucesso") {
-      box.classList.add("sucesso");
-    } else {
-      box.classList.add("erro-geral");
-    }
-
-    box.textContent = texto;
-  }
-
-});
+  });
+}
